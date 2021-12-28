@@ -5,7 +5,7 @@ bash -c 'set -o pipefail' # return code of first cmd to fail in a pipeline
 # Combine monthly history files into yearly file
 
 HOME=${HOME}
-HISTFILE=${HISTFILE} # location of history file
+HISTFILE="${HOME}/.zsh_history" # location of history file
 
 # BACKUP is the yearly backup file for bash history,
 # it also records the month when the year end was done

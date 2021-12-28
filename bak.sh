@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# WARNING Do not exit on error since this file is included in ~/.bashrc
+# WARNING Do not exit on error since this file is included in ~/.zshrc
 
 # This script creates backups of the bash history file, see
-# https://github.com/mozey/bash_hist
+# https://github.com/mozey/zhist
 
 HOME=${HOME}
-HISTFILE=${HISTFILE} # location of history file
+HISTFILE="${HOME}/.zsh_history" # location of history file
 
-# KEEP number of lines from tail of BASH_HIST when creating new BACKUP
+# KEEP number of lines from tail of HISTFILE when creating new BACKUP
 KEEP=200
 # BACKUP is the monthly backup file for bash history
 BACKUP=${HISTFILE}.month.$(date +%Y%m)
@@ -30,7 +30,5 @@ if [[ -s "${HISTFILE}" && "${HISTFILE}" -nt "$BACKUP" ]]; then
     # Create new backup and leave last few commands
     mv -f "${HISTFILE}" "${BACKUP}"
     tail -n${KEEP} "${BACKUP}" >"${HISTFILE}"
-    # TODO reinitialize required?
-    # history -r
   fi
 fi

@@ -1,6 +1,6 @@
 # zhist
 
-Backup script and cheatsheet for Z Shell history.
+Backup scripts for Z Shell history.
 
 Creates monthly and yearly backups of `~/.zsh_history` when starting a new session.
 
@@ -22,29 +22,39 @@ Run it from `~/.zshrc`, [see this](https://superuser.com/a/892248)
 if [ -f ~/.zhist/bak.sh ]; then . ~/.zhist/bak.sh; fi
 ```
 
-
-
-# Cheat Sheet
-
 **TODO** Read [this](https://zsh.sourceforge.io/Guide/zshguide04.html#l89)
+**TODO** Consider [functions.zsh](https://github.com/ohmyzsh/ohmyzsh/blob/master/lib/functions.zsh)
 
-Print most frequently used commands,
-only considers commands in `$HISTFILE`. See [functions.zsh](https://github.com/ohmyzsh/ohmyzsh/blob/master/lib/functions.zsh)
+Create `zhist` function in `~/.zshrc`
 ```sh
-zsh_stats
+HISTSIZE=90000 # Set HISTSIZE to more commands than you can type in a month
+function zhist { 
+    grep "$1" -h --color ~/.zsh_history* | \
+    sort -t: -u -k1,1 | \
+    grep "$1" --color; 
+}
+alias zh="zhist" 
 ```
 
-Print most frequently used commands in all `~/.zsh_history*` files
-```sh
-zhist_stats
-```
+
+# Usage
 
 Search history for *"foo"*
 ```sh
 zhist foo
 ```
 
-Convert `bash_history` to `zsh_history`
+Print most frequently used commands, only considers commands in `$HISTFILE`
+```sh
+zsh_stats
+```
+
+**TODO** Print most frequently used commands in all `~/.zsh_history*` files
+```sh
+zhist_stats
+```
+
+**TODO** Convert `bash_history` to `zsh_history`
 ```sh
 zhist_convert bash_history
 ```
