@@ -32,9 +32,10 @@ if [ -f ~/.zhist/bak.sh ]; then ~/.zhist/bak.sh; fi
 
 # Usage
 
-Convert `.bash_history` to `.zsh_history`
+Convert `.bash_history` to `.zsh_history`.
+**WARNING** Does not preserve timestamps
 ```sh
-~/.zhist/convert_bash_history.sh
+~/.zhist/convert_bash_to_zsh_history.sh
 ```
 
 Print most frequently used commands, only considers commands in `$HISTFILE`
