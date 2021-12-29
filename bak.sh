@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
 # WARNING Do not exit on error since this file is included in ~/.zshrc
 
-# This script creates backups of the bash history file, see
+# This script creates backups of the zsh history file, see
 # https://github.com/mozey/zhist
 
 HOME=${HOME}
-HISTFILE="${HOME}/.zsh_history" # location of history file
 
-# KEEP number of lines from tail of HISTFILE when creating new BACKUP
-KEEP=200
-# BACKUP is the monthly backup file for bash history
-BACKUP=${HISTFILE}.month.$(date +%Y%m)
+# HISTFILE is the history file
+HISTFILE="${HOME}/.zsh_history"
+# BACKUP is the backup file
+BACKUP="${HOME}/.zhist/.zsh_history"
 
 # https://www.gnu.org/software/bash/manual/html_node/Bash-Conditional-Expressions.html
 #
@@ -21,14 +20,19 @@ BACKUP=${HISTFILE}.month.$(date +%Y%m)
 #     True if file1 is newer (according to modification date) than file2,
 #     or if file1 exists and file2 does not.
 #
-if [[ -s "${HISTFILE}" && "${HISTFILE}" -nt "$BACKUP" ]]; then
-  # History file is newer then backup
-  if [[ -f ${BACKUP} ]]; then
-    # Backup file exists, update it
-    cp -f "${HISTFILE}" "${BACKUP}"
-  else
-    # Create new backup and leave last few commands
-    mv -f "${HISTFILE}" "${BACKUP}"
-    tail -n${KEEP} "${BACKUP}" >"${HISTFILE}"
+#   arg1 OP arg2
+#     OP is one of ‘-eq’, ‘-ne’, ‘-lt’, ‘-le’, ‘-gt’, or ‘-ge’. 
+#     These arithmetic binary operators...
+#
+if [[ -s "${HISTFILE}" ]]; then
+  if [[ "${HISTFILE}" -nt "$BACKUP" ]]; then
+    # History is newer than backup, or backup doesn't exist
+    HISTFILE_C=$(wc -c "${HISTFILE}" | awk '{print $1}')
+    BACKUP_C=$(wc -c "${BACKUP}" | awk '{print $1}') || "0"
+    if [[ "$HISTFILE_C" -gt "${BACKUP_C}" ]]; then
+      # History has more characters than backup
+      cp -f "${HISTFILE}" "${BACKUP}"
+    fi
   fi
 fi
+
