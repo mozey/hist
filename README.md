@@ -15,9 +15,16 @@ cd ~
 git clone https://github.com/mozey/zhist .zhist
 ```
 
-Run it from `~/.zshrc`, [see this](https://superuser.com/a/892248)
+Add history settings to `~/.zshrc`, [see this](https://unix.stackexchange.com/a/273863/309572)
 ```sh
-if [ -f ~/.zhist/bak.sh ]; then . ~/.zhist/bak.sh; fi
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000000
+SAVEHIST=10000000
+```
+
+Run backup script from `~/.zprofile`, [see this](https://superuser.com/a/892248)
+```sh
+if [ -f ~/.zhist/bak.sh ]; then ~/.zhist/bak.sh; fi
 ```
 
 **NOTE** `bak.sh` is using bash because zsh doesn't have a nice linter? [See this](https://www.reddit.com/r/zsh/comments/gt03ki/state_of_zsh_linters/). So basically I'm just using zsh because it's pretty and it has useful plugins, but for scripting I'll probably keep using bash for now...
